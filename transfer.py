@@ -37,6 +37,7 @@ def map_continent(continent):
 def get_continent(query):
     url = f"http://ip-api.com/json/{query}?fields=status,message,continent"
     resp = requests.get(url)
+    print(query)
     return map_continent(resp.json()["continent"])
 
 
@@ -48,7 +49,7 @@ class VPSFactory:
             "host": "ec2-3-86-70-167.compute-1.amazonaws.com",
             "ip": "3.86.70.167",
             "user": "ec2-user",
-            "key": "america_kp.pem",
+            "key": "keys/america_kp.pem",
         },
         "europe": {
             "name": "VPS 2",
@@ -56,7 +57,7 @@ class VPSFactory:
             "host": "ec2-3-72-45-196.eu-central-1.compute.amazonaws.com",
             "ip": "3.72.45.196",
             "user": "ec2-user",
-            "key": "europe_kp.pem",
+            "key": "keys/europe_kp.pem",
         },
         "asia": {
             "name": "VPS 3",
@@ -64,7 +65,7 @@ class VPSFactory:
             "host": "ec2-18-139-226-152.ap-southeast-1.compute.amazonaws.com",
             "ip": "18.139.226.152",
             "user": "ec2-user",
-            "key": "asia_kp.pem",
+            "key": "keys/asia_kp.pem",
         },
     }
 

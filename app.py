@@ -23,13 +23,11 @@ def index():
 def process_input():
     data = request.json
     user_input = data.get("user_input")
-    print(user_input)
     if url_validator(user_input):
         transfer = FileTransfer(user_input)
         result = transfer.run()
     else:
         result = ["Not a valid url!"]
-    print(result)
     return jsonify({"result": result})
 
 
@@ -37,14 +35,13 @@ def process_input():
 def download():
     data = request.json
     user_input = data.get("user_input")
-    user_ip = data.get("user_input")
-    user_ip = request.remote_addr
-    user_ip = "46.219.250.82"
+    user_ip = data.get("user_ip")
+    if not user_ip:
+        user_ip = request.remote_addr
     file_download = FileDownload(user_input, user_ip)
     result = file_download.download()
-    print(result)
     return jsonify({"result": [result]})
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8000)

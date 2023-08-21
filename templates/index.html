@@ -6,8 +6,8 @@
 </head>
 <body>
     <form>
-        <input type="text" id="user_input" placeholder="Enter something" oninput="handleInput()">
-        <input type="text" id="test_ip" placeholder="Enter ip for test">
+        <input type="text" id="user_input" placeholder="Enter link" oninput="handleInput()">
+        <input type="text" id="user_ip" placeholder="Enter ip for test">
         <button type="button" onclick="sendData()">Send Data</button>
         <button type="button" onclick="downloadData()">Download Data</button>
 
@@ -65,13 +65,15 @@
 
         function downloadData() {
             var userInput = document.getElementById("user_input").value;
+            var userIp = document.getElementById("user_ip").value;
+
             showLoading();
             fetch('/download', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ user_input: userInput })
+                body: JSON.stringify({ user_input: userInput, user_ip: userIp })
             })
             .then(response => response.json())
             .then(data => updateResponse(data));
