@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Input Action</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <form>
+        <input type="text" id="user_input" placeholder="Enter something" oninput="handleInput()">
+        <input type="text" id="test_ip" placeholder="Enter ip for test">
+        <button type="button" onclick="sendData()">Send Data</button>
+        <button type="button" onclick="downloadData()">Download Data</button>
+
+        <div id="loading" style="display: none;">Loading...</div>
+        <div id="response" style="display: none;">
+            <h2>Response:</h2>
+            <ul id="responseList"></ul>
+        </div>
+    </form>
+
+    <script>
+        function handleInput() {
+            // Hide response and reset loading
+            document.getElementById("response").style.display = "none";
+            document.getElementById("loading").style.display = "none";
+        }
+
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("response").style.display = "none";
+        }
+
+        function hideLoading() {
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("response").style.display = "block";
+        }
+
+        function updateResponse(data) {
+            var responseList = document.getElementById("responseList");
+            responseList.innerHTML = ""; // Clear existing list items
+
+            // Populate list with data
+            data.result.forEach(item => {
+                var listItem = document.createElement("li");
+                listItem.textContent = item;
+                responseList.appendChild(listItem);
+            });
+
+            hideLoading();
+        }
+
+        function sendData() {
+            var userInput = document.getElementById("user_input").value;
+            showLoading();
+            fetch('/process_input', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_input: userInput })
+            })
+            .then(response => response.json())
+            .then(data => updateResponse(data));
+        }
+
+        function downloadData() {
+            var userInput = document.getElementById("user_input").value;
+            showLoading();
+            fetch('/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_input: userInput })
+            })
+            .then(response => response.json())
+            .then(data => updateResponse(data));
+        }
+    </script>
+</body>
+</html>
